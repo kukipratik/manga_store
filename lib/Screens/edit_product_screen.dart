@@ -41,6 +41,7 @@ class _EditProductScreenState extends State<EditProductScreen> {
       if (productId != null) {
         productId = productId as String;
         _editedProduct = Provider.of<Products>(context).findById(productId);
+        _imageUrlController.text = _editedProduct.imageUrl!;
       }
     }
     super.didChangeDependencies();
@@ -75,22 +76,7 @@ class _EditProductScreenState extends State<EditProductScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        elevation: 0,
-        backgroundColor: appbarColor,
-        centerTitle: true,
-        title: const Text("Edit Products"),
-        actions: [
-          Padding(
-            padding: const EdgeInsets.only(right: 12.0),
-            child: IconButton(
-                onPressed: _saveForm,
-                icon: const Icon(
-                  Icons.save,
-                )),
-          )
-        ],
-      ),
+      appBar: showAppBar(),
       body: Padding(
         padding: const EdgeInsets.all(15.0),
         child: Form(
@@ -111,6 +97,25 @@ class _EditProductScreenState extends State<EditProductScreen> {
               ],
             )),
       ),
+    );
+  }
+
+  AppBar showAppBar() {
+    return AppBar(
+      elevation: 0,
+      backgroundColor: appbarColor,
+      centerTitle: true,
+      title: const Text("Edit Products"),
+      actions: [
+        Padding(
+          padding: const EdgeInsets.only(right: 12.0),
+          child: IconButton(
+              onPressed: _saveForm,
+              icon: const Icon(
+                Icons.save,
+              )),
+        )
+      ],
     );
   }
 
