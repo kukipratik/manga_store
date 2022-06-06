@@ -37,12 +37,13 @@ class _EditProductScreenState extends State<EditProductScreen> {
   @override
   void didChangeDependencies() {
     if (_initFirstTime) {
-      String productId = ModalRoute.of(context)!.settings.arguments as String;
-      print(productId);
-      _editedProduct =
-          Provider.of<Products>(context, listen: false).findById(productId);
-      super.didChangeDependencies();
+      var productId = ModalRoute.of(context)!.settings.arguments;
+      if (productId != null) {
+        productId = productId as String;
+        _editedProduct = Provider.of<Products>(context).findById(productId);
+      }
     }
+    super.didChangeDependencies();
     _initFirstTime = false;
   }
 
