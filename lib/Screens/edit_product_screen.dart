@@ -98,6 +98,7 @@ class _EditProductScreenState extends State<EditProductScreen> {
             child: ListView(
               children: [
                 TextFormField(
+                  initialValue: _editedProduct.title,
                   decoration: const InputDecoration(label: Text("Title")),
                   textInputAction: TextInputAction.next,
                   onFieldSubmitted: (_) {
@@ -119,6 +120,7 @@ class _EditProductScreenState extends State<EditProductScreen> {
                   },
                 ),
                 TextFormField(
+                  initialValue: _editedProduct.price.toString(),
                   decoration: const InputDecoration(label: Text("Price")),
                   textInputAction: TextInputAction.next,
                   keyboardType: TextInputType.number,
@@ -146,6 +148,7 @@ class _EditProductScreenState extends State<EditProductScreen> {
                   },
                 ),
                 TextFormField(
+                  initialValue: _editedProduct.description,
                   decoration: const InputDecoration(label: Text("Discription")),
                   maxLines: 3,
                   keyboardType: TextInputType.multiline,
