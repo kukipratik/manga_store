@@ -76,9 +76,8 @@ class Products with ChangeNotifier {
   }
 
   void updateProduct(String id, product) {
-    var gotThisIndex = _items.indexWhere((existingProduct) {
-      return existingProduct.id == id;
-    });
+    var gotThisIndex =
+        _items.indexWhere((existingProduct) => existingProduct.id == id);
     if (gotThisIndex >= 0) {
       _items[gotThisIndex] = Product(
           id: DateTime.now().toString(),
@@ -92,5 +91,10 @@ class Products with ChangeNotifier {
       // print("noting bro");
       return;
     }
+  }
+
+  void deleteProduct(String id) {
+    _items.removeWhere((existingProduct) => existingProduct.id == id);
+    notifyListeners();
   }
 }
