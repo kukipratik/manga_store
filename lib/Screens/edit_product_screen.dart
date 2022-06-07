@@ -54,6 +54,7 @@ class _EditProductScreenState extends State<EditProductScreen> {
     _imageUrlFocusNode.removeListener(_updateImageUrl);
     _priceFocusNode.dispose();
     _descriptionFocusNode.dispose();
+    _imageUrlFocusNode.dispose();
     _imageUrlController.dispose();
     super.dispose();
   }
@@ -67,7 +68,10 @@ class _EditProductScreenState extends State<EditProductScreen> {
 
   // for saving the user input...
   void _saveForm(id) {
-    _form.currentState!.validate();
+    final isValid = _form.currentState!.validate();
+    if (!isValid) {
+      return;
+    }
     _form.currentState!.save();
     Products product = Provider.of<Products>(context, listen: false);
     if (id == null) {

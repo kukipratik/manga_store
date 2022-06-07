@@ -77,22 +77,19 @@ class Products with ChangeNotifier {
 
   void updateProduct(String id, product) {
     var gotThisIndex = _items.indexWhere((existingProduct) {
-      print("exproduct = ${existingProduct.id}, passedID = $id ");
       return existingProduct.id == id;
     });
-    print(gotThisIndex);
     if (gotThisIndex >= 0) {
-      print("_item[i] = ${_items[gotThisIndex]} and product = ${product.id} ");
       _items[gotThisIndex] = Product(
           id: DateTime.now().toString(),
           title: product.title,
           description: product.description,
           price: product.price,
           imageUrl: product.imageUrl);
-      print("replaced");
+      // print("replaced");
       notifyListeners();
     } else {
-      print("noting bro");
+      // print("noting bro");
       return;
     }
   }
