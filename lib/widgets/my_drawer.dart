@@ -39,7 +39,7 @@ class MyDrawer extends StatelessWidget {
                   style: Theme.of(context).textTheme.titleMedium,
                 ),
                 onTap: () {
-                  Navigator.pop(context);
+                  Navigator.of(context).pushNamed(homeScreen);
                 },
               ),
               const Divider(),

@@ -66,10 +66,17 @@ class _EditProductScreenState extends State<EditProductScreen> {
   }
 
   // for saving the user input...
-  void _saveForm() {
+  void _saveForm(id) {
     _form.currentState!.validate();
     _form.currentState!.save();
-    Provider.of<Products>(context, listen: false).addProduct(_editedProduct);
+    Products product = Provider.of<Products>(context, listen: false);
+    if (id == null) {
+      product.addProduct(_editedProduct);
+      // print("make new product");
+    } else {
+      product.updateProduct(id, _editedProduct);
+      print("don't make new product");
+    }
     Navigator.of(context).pop();
   }
 
@@ -110,7 +117,7 @@ class _EditProductScreenState extends State<EditProductScreen> {
         Padding(
           padding: const EdgeInsets.only(right: 12.0),
           child: IconButton(
-              onPressed: _saveForm,
+              onPressed: (() => _saveForm(_editedProduct.id)),
               icon: const Icon(
                 Icons.save,
               )),
@@ -127,7 +134,7 @@ class _EditProductScreenState extends State<EditProductScreen> {
       controller: _imageUrlController,
       focusNode: _imageUrlFocusNode,
       onFieldSubmitted: (_) {
-        _saveForm();
+        _saveForm(_editedProduct.id);
       },
       onSaved: (value) {
         _editedProduct = Product(
