@@ -79,7 +79,7 @@ class _EditProductScreenState extends State<EditProductScreen> {
       // print("make new product");
     } else {
       product.updateProduct(id, _editedProduct);
-      print("don't make new product");
+      // print("don't make new product");
     }
     Navigator.of(context).pop();
   }

@@ -21,7 +21,7 @@ class OrderScreen extends StatelessWidget {
       ),
       body: ListView.builder(
         itemCount: orderData.orders.length,
-        itemBuilder: (ctx, i) => OrderItem(orderData.orders[i]),
+        itemBuilder: (ctx, i) => OrderItem(order: orderData.orders[i]),
       ),
     );
   }

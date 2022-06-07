@@ -9,13 +9,16 @@ import '../Provider/order.dart' as ord;
 class OrderItem extends StatefulWidget {
   final ord.OrderItem order;
 
-  const OrderItem(this.order);
+  const OrderItem({
+    Key? key,
+    required this.order,
+  }) : super(key: key);
 
   @override
-  _OrderItemState createState() => _OrderItemState();
+  OrderItemState createState() => OrderItemState();
 }
 
-class _OrderItemState extends State<OrderItem> {
+class OrderItemState extends State<OrderItem> {
   var _expanded = false;
 
   @override
