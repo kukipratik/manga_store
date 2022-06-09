@@ -26,6 +26,7 @@ class _EditProductScreenState extends State<EditProductScreen> {
     imageUrl: '',
   );
   bool _initFirstTime = true;
+  bool _isLoading = false;
 
   // this function if for adding listner...
   @override
@@ -73,41 +74,56 @@ class _EditProductScreenState extends State<EditProductScreen> {
       return;
     }
     _form.currentState!.save();
+    setState(() {
+      _isLoading = true;
+    });
     Products product = Provider.of<Products>(context, listen: false);
     if (id == null) {
-      product.addProduct(_editedProduct);
+      product.addProduct(_editedProduct).then((value) {
+        setState(() {
+          _isLoading = false;
+        });
+        Navigator.of(context).pop();
+      });
       // print("make new product");
     } else {
       product.updateProduct(id, _editedProduct);
       // print("don't make new product");
+      setState(() {
+        _isLoading = false;
+      });
+      Navigator.of(context).pop();
     }
-    Navigator.of(context).pop();
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: showAppBar(),
-      body: Padding(
-        padding: const EdgeInsets.all(15.0),
-        child: Form(
-            key: _form,
-            child: ListView(
-              children: [
-                titleField(context),
-                priceField(context),
-                discriptionField(),
-                Row(
-                  children: [
-                    showImage(),
-                    Expanded(
-                      child: imageURLField(),
-                    ),
-                  ],
-                )
-              ],
-            )),
-      ),
+      body: _isLoading
+          ? const Center(
+              child: CircularProgressIndicator(),
+            )
+          : Padding(
+              padding: const EdgeInsets.all(15.0),
+              child: Form(
+                  key: _form,
+                  child: ListView(
+                    children: [
+                      titleField(context),
+                      priceField(context),
+                      discriptionField(),
+                      Row(
+                        children: [
+                          showImage(),
+                          Expanded(
+                            child: imageURLField(),
+                          ),
+                        ],
+                      )
+                    ],
+                  )),
+            ),
     );
   }
 
