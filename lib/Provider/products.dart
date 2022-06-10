@@ -8,35 +8,35 @@ class Products with ChangeNotifier {
   final List<Product> _items = [
     Product(
       id: 'p1',
-      title: 'Red Shirt',
-      description: 'A red shirt - it is pretty red!',
+      title: 'One Piece',
+      description: 'Best anime of all the time',
       price: 29.99,
       imageUrl:
-          'https://cdn.pixabay.com/photo/2016/10/02/22/17/red-t-shirt-1710578_1280.jpg',
+          'https://images-na.ssl-images-amazon.com/images/I/81rEhhwbubL.jpg',
     ),
     Product(
       id: 'p2',
-      title: 'Trousers',
-      description: 'A nice pair of trousers.',
+      title: 'Darling in the franxx',
+      description: 'Anime world with zero two.',
       price: 59.99,
       imageUrl:
-          'https://upload.wikimedia.org/wikipedia/commons/thumb/e/e8/Trousers%2C_dress_%28AM_1960.022-8%29.jpg/512px-Trousers%2C_dress_%28AM_1960.022-8%29.jpg',
+          'https://images-na.ssl-images-amazon.com/images/I/81fkwgB06lL.jpg',
     ),
     Product(
       id: 'p3',
-      title: 'Scarf',
-      description: 'Warm and cozy - exactly what you need for the winter.',
+      title: 'Demon Slayer',
+      description: 'Brother and sister anime',
       price: 19.99,
       imageUrl:
-          'https://live.staticflickr.com/4043/4438260868_cc79b3369d_z.jpg',
+          'https://i.pinimg.com/originals/51/04/03/510403652ec117ff6d1c12ff85731319.jpg',
     ),
     Product(
       id: 'p4',
-      title: 'A Pan',
-      description: 'Prepare any meal you want.',
+      title: 'Spy x Family',
+      description: 'New Trending anime.',
       price: 49.99,
       imageUrl:
-          'https://upload.wikimedia.org/wikipedia/commons/thumb/1/14/Cast-Iron-Pan.jpg/1024px-Cast-Iron-Pan.jpg',
+          'https://images-na.ssl-images-amazon.com/images/I/717CIWUQyBL.jpg',
     ),
   ];
   // var _showFavoritesOnly = false;
@@ -69,7 +69,7 @@ class Products with ChangeNotifier {
 
   Future<void> addProduct(product) {
     const url =
-        'https://backend-practice-23eef-default-rtdb.firebaseio.com/products.json';
+        'https://backend-practice-23eef-default-rtdb.firebaseio.com/products';
     return http
         .post(Uri.parse(url),
             body: json.encode({
@@ -88,6 +88,8 @@ class Products with ChangeNotifier {
           price: product.price,
           imageUrl: product.imageUrl));
       notifyListeners();
+    }).catchError((error) {
+      throw (error);
     });
   }
 

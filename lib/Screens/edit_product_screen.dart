@@ -79,7 +79,23 @@ class _EditProductScreenState extends State<EditProductScreen> {
     });
     Products product = Provider.of<Products>(context, listen: false);
     if (id == null) {
-      product.addProduct(_editedProduct).then((value) {
+      product.addProduct(_editedProduct).catchError((error) {
+        // ignore: prefer_void_to_null
+        return showDialog<Null>(
+            context: context,
+            builder: (ctx) => AlertDialog(
+                  title: const Text("An error occured"),
+                  content: const Text("Something went wrong"),
+                  actions: [
+                    TextButton(
+                        onPressed: () {
+                          Navigator.of(ctx).pop();
+                        },
+                        child: const Text("Okay"))
+                  ],
+                ));
+        // print(error);
+      }).then((value) {
         setState(() {
           _isLoading = false;
         });
