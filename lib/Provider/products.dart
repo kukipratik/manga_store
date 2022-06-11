@@ -144,7 +144,20 @@ class Products with ChangeNotifier {
   }
 
   void deleteProduct(String id) {
+    final url =
+        'https://backend-practice-23eef-default-rtdb.firebaseio.com/products/$id.json';
+    final existingIndex =
+        _items.indexWhere((existingProduct) => existingProduct.id == id);
+    var product = _items[existingIndex];
     _items.removeWhere((existingProduct) => existingProduct.id == id);
     notifyListeners();
+    http.delete(Uri.parse(url)).then((response) {
+      if (response.statusCode >= 400) {}
+      // print(value.statusCode);
+    }).catchError((error) {
+      // print("why you? error = $error");
+      _items.insert(existingIndex, product);
+      notifyListeners();
+    });
   }
 }
