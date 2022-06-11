@@ -96,22 +96,23 @@ class _EditProductScreenState extends State<EditProductScreen> {
                         child: const Text("Okay"))
                   ],
                 ));
-      } finally {
-        setState(() {
-          _isLoading = false;
-        });
-        Navigator.of(context).pop();
       }
+      // finally {
+      //   setState(() {
+      //     _isLoading = false;
+      //   });
+      //   Navigator.of(context).pop();
+      // }
 
       // print("make new product");
     } else {
-      product.updateProduct(id, _editedProduct);
+      await product.updateProduct(id, _editedProduct);
       // print("don't make new product");
-      setState(() {
-        _isLoading = false;
-      });
-      Navigator.of(context).pop();
     }
+    setState(() {
+      _isLoading = false;
+    });
+    Navigator.of(context).pop();
   }
 
   @override

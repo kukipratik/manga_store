@@ -116,12 +116,21 @@ class Products with ChangeNotifier {
     }
   }
 
-  void updateProduct(String id, product) {
+  Future<void> updateProduct(String id, product) async {
+    final url =
+        'https://backend-practice-23eef-default-rtdb.firebaseio.com/products/$id.json';
     var gotThisIndex =
         _items.indexWhere((existingProduct) => existingProduct.id == id);
     if (gotThisIndex >= 0) {
+      await http.patch(Uri.parse(url),
+          body: json.encode({
+            'title': product.title,
+            'description': product.description,
+            'price': product.price,
+            'imageUrl': product.imageUrl
+          }));
       _items[gotThisIndex] = Product(
-          id: DateTime.now().toString(),
+          id: id,
           title: product.title,
           description: product.description,
           price: product.price,
