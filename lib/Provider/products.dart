@@ -1,6 +1,7 @@
 import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
+import 'package:manga_store/models/http_exception.dart';
 
 import './product.dart';
 
@@ -152,7 +153,9 @@ class Products with ChangeNotifier {
     _items.removeWhere((existingProduct) => existingProduct.id == id);
     notifyListeners();
     http.delete(Uri.parse(url)).then((response) {
-      if (response.statusCode >= 400) {}
+      if (response.statusCode >= 400) {
+        throw HttpException("Couldn't Delete this product.");
+      }
       // print(value.statusCode);
     }).catchError((error) {
       // print("why you? error = $error");
