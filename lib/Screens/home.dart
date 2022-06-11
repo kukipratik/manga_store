@@ -2,6 +2,7 @@ import 'package:badges/badges.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:manga_store/Provider/cart.dart';
+import 'package:manga_store/Provider/products.dart';
 import 'package:manga_store/utils/routes.dart';
 import 'package:provider/provider.dart';
 
@@ -23,6 +24,22 @@ class HomeScreen extends StatefulWidget {
 
 class _HomeScreenState extends State<HomeScreen> {
   var _showOnlyFavorites = false;
+  var _isLoading = false;
+
+  @override
+  void initState() {
+    setState(() {
+      _isLoading = true;
+    });
+    Provider.of<Products>(context, listen: false)
+        .fetchAndSetProduct()
+        .then((_) {
+      setState(() {
+        _isLoading = false;
+      });
+    });
+    super.initState();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -81,7 +98,11 @@ class _HomeScreenState extends State<HomeScreen> {
           ),
         ],
       ),
-      body: ProductsGrid(showFavorite: _showOnlyFavorites),
+      body: _isLoading
+          ? const Center(
+              child: CircularProgressIndicator(),
+            )
+          : ProductsGrid(showFavorite: _showOnlyFavorites),
     );
   }
 }
