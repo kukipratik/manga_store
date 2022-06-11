@@ -69,6 +69,7 @@ class _EditProductScreenState extends State<EditProductScreen> {
 
   // for saving the user input...
   Future<void> _saveForm(id) async {
+    final navigate = Navigator.of(context);
     final isValid = _form.currentState!.validate();
     if (!isValid) {
       return;
@@ -103,8 +104,6 @@ class _EditProductScreenState extends State<EditProductScreen> {
       //   });
       //   Navigator.of(context).pop();
       // }
-
-      // print("make new product");
     } else {
       await product.updateProduct(id, _editedProduct);
       // print("don't make new product");
@@ -112,7 +111,7 @@ class _EditProductScreenState extends State<EditProductScreen> {
     setState(() {
       _isLoading = false;
     });
-    Navigator.of(context).pop();
+    navigate.pop();
   }
 
   @override

@@ -84,7 +84,6 @@ class Products with ChangeNotifier {
             imageUrl: value['imageUrl'],
             isFavorite: value['isFavorite']));
       });
-      // print(json.decode(response.body));
       _items = loadedProduct;
       notifyListeners();
     } catch (error) {
@@ -104,7 +103,6 @@ class Products with ChangeNotifier {
             "imageUrl": product.imageUrl,
             "isFavorite": product.isFavorite
           }));
-      // print(json.decode(response.body));
       _items.add(Product(
           id: json.decode(response.body)['name'],
           title: product.title,
@@ -136,31 +134,29 @@ class Products with ChangeNotifier {
           description: product.description,
           price: product.price,
           imageUrl: product.imageUrl);
-      // print("replaced");
       notifyListeners();
     } else {
-      // print("noting bro");
       return;
     }
   }
 
-  void deleteProduct(String id) {
+  Future<void> deleteProduct(String id) async {
     final url =
         'https://backend-practice-23eef-default-rtdb.firebaseio.com/products/$id.json';
     final existingIndex =
         _items.indexWhere((existingProduct) => existingProduct.id == id);
     var product = _items[existingIndex];
+
+    // deleting product...
     _items.removeWhere((existingProduct) => existingProduct.id == id);
     notifyListeners();
-    http.delete(Uri.parse(url)).then((response) {
-      if (response.statusCode >= 400) {
-        throw HttpException("Couldn't Delete this product.");
-      }
-      // print(value.statusCode);
-    }).catchError((error) {
-      // print("why you? error = $error");
+
+    // if no error setting product back...
+    final response = await http.delete(Uri.parse(url));
+    if (response.statusCode >= 400) {
       _items.insert(existingIndex, product);
       notifyListeners();
-    });
+      throw HttpException("Couldn't Delete this product.");
+    }
   }
 }
