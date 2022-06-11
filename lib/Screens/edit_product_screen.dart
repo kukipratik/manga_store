@@ -68,7 +68,7 @@ class _EditProductScreenState extends State<EditProductScreen> {
   }
 
   // for saving the user input...
-  void _saveForm(id) {
+  Future<void> _saveForm(id) async {
     final isValid = _form.currentState!.validate();
     if (!isValid) {
       return;
@@ -79,9 +79,11 @@ class _EditProductScreenState extends State<EditProductScreen> {
     });
     Products product = Provider.of<Products>(context, listen: false);
     if (id == null) {
-      product.addProduct(_editedProduct).catchError((error) {
+      try {
+        await product.addProduct(_editedProduct);
+      } catch (error) {
         // ignore: prefer_void_to_null
-        return showDialog<Null>(
+        await showDialog<Null>(
             context: context,
             builder: (ctx) => AlertDialog(
                   title: const Text("An error occured"),
@@ -94,13 +96,13 @@ class _EditProductScreenState extends State<EditProductScreen> {
                         child: const Text("Okay"))
                   ],
                 ));
-        // print(error);
-      }).then((value) {
+      } finally {
         setState(() {
           _isLoading = false;
         });
         Navigator.of(context).pop();
-      });
+      }
+
       // print("make new product");
     } else {
       product.updateProduct(id, _editedProduct);

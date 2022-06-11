@@ -69,7 +69,7 @@ class Products with ChangeNotifier {
 
   Future<void> addProduct(product) async {
     const url =
-        'https://backend-practice-23eef-default-rtdb.firebaseio.com/products';
+        'https://backend-practice-23eef-default-rtdb.firebaseio.com/products.json';
     try {
       final response = await http.post(Uri.parse(url),
           body: json.encode({
@@ -88,7 +88,7 @@ class Products with ChangeNotifier {
           imageUrl: product.imageUrl));
       notifyListeners();
     } catch (error) {
-      throw (error);
+      rethrow;
     }
   }
 
