@@ -15,10 +15,43 @@ class OrderItem {
 }
 
 class Orders with ChangeNotifier {
-  final List<OrderItem> _orders = [];
+  List<OrderItem> _orders = [];
 
   List<OrderItem> get orders {
     return [..._orders];
+  }
+
+  Future<void> fetchAndSet() async {
+    const url =
+        'https://backend-practice-23eef-default-rtdb.firebaseio.com/orders.json';
+
+    final response = await http.get(Uri.parse(url));
+    final List<OrderItem> loadedItem = [];
+    final extractedData = json.decode(response.body);
+
+    if (extractedData == null) {
+      //will be helpful if there is no any orders...
+      return;
+    }
+
+    extractedData.forEach((orderId, orderData) {
+      loadedItem.add(OrderItem(
+        orderId,
+        orderData['amount'],
+        (orderData['products'] as List<dynamic>)
+            .map((item) => CartItem(
+                  item['id'],
+                  item['title'],
+                  item['quantity'],
+                  item['price'],
+                ))
+            .toList(),
+        DateTime.parse(orderData['dateTime']),
+      ));
+    });
+
+    _orders = loadedItem.reversed.toList();
+    notifyListeners();
   }
 
   Future<void> addOrder(List<CartItem> cartProducts, double total) async {
@@ -31,6 +64,7 @@ class Orders with ChangeNotifier {
           'dateTime': timeStamp.toIso8601String(),
           'products': cartProducts
               .map((cp) => {
+                    'id': cp.id,
                     'title': cp.title,
                     'quantity': cp.quantity,
                     'price': cp.price

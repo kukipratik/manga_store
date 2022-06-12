@@ -28,9 +28,11 @@ class _HomeScreenState extends State<HomeScreen> {
 
   @override
   void initState() {
-    setState(() {
-      _isLoading = true;
-    });
+    // setstate is not required because initstate runs before widget build...
+    // setState(() {
+    _isLoading = true;
+    // });
+
     Provider.of<Products>(context, listen: false)
         .fetchAndSetProduct()
         .then((_) {

@@ -73,8 +73,13 @@ class Products with ChangeNotifier {
         'https://backend-practice-23eef-default-rtdb.firebaseio.com/products.json';
     try {
       final response = await http.get(Uri.parse(url));
-      final extractedData = json.decode(response.body) as Map<String, dynamic>;
+      final extractedData = json.decode(response.body);
       final List<Product> loadedProduct = [];
+
+      if (extractedData == null) {
+        //this will happen in empty case...
+        return;
+      }
       extractedData.forEach((key, value) {
         loadedProduct.add(Product(
             id: key,
