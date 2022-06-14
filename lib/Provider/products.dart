@@ -72,10 +72,13 @@ class Products with ChangeNotifier {
     const url =
         'https://backend-practice-23eef-default-rtdb.firebaseio.com/products.json';
     try {
+      // print("value['title'] = $value['title']");
       final response = await http.get(Uri.parse(url));
-      final extractedData = json.decode(response.body);
+      final extractedData = json.decode(response.body) as Map<String, dynamic>;
       final List<Product> loadedProduct = [];
+      // print(extractedData);
 
+      // ignore: unnecessary_null_comparison
       if (extractedData == null) {
         //this will happen in empty case...
         return;

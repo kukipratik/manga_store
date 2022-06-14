@@ -3,6 +3,7 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:manga_store/Provider/cart.dart';
 import 'package:manga_store/Provider/order.dart';
 import 'package:manga_store/Provider/products.dart';
+import 'package:manga_store/Screens/auth_screen.dart';
 import 'package:manga_store/Screens/cart_screen.dart';
 import 'package:manga_store/Screens/edit_product_screen.dart';
 import 'package:manga_store/Screens/order_screen.dart';
@@ -51,6 +52,7 @@ class MyApp extends StatelessWidget {
                     fontSize: 20,
                   )),
                 )),
+        initialRoute: authScreen,
         routes: {
           homeScreen: (context) => const HomeScreen(),
           productDetail: (context) => const ProductDetail(),
@@ -58,6 +60,7 @@ class MyApp extends StatelessWidget {
           orderScreen: (context) => const OrderScreen(),
           userProductScreen: (context) => const UserProductsScreen(),
           editProductScreen: (context) => const EditProductScreen(),
+          authScreen: (context) => const AuthScreen(),
         },
       ),
     );

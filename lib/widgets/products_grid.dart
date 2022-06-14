@@ -21,7 +21,9 @@ class ProductsGrid extends StatelessWidget {
       itemBuilder: (ctx, i) {
         // print('products[i] = ${products[i].title}');
         return ChangeNotifierProvider.value(
-            value: products[i], child: ProductItem());
+            value: products[i],
+            // ignore: prefer_const_constructors
+            child: ProductItem());
       },
       gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
         crossAxisCount: 2,
