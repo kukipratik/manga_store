@@ -1,3 +1,5 @@
+// ignore_for_file: prefer_final_fields
+
 import 'dart:convert';
 
 import 'package:flutter/material.dart';
@@ -5,9 +7,26 @@ import 'package:http/http.dart' as http;
 import 'package:manga_store/models/http_exception.dart';
 
 class Auth with ChangeNotifier {
-  // String _token;
-  // DateTime _expiryDate;
-  // String _userId;
+  String? _token;
+  DateTime? _expiryDate;
+  String? _userId;
+
+  String get token {
+    if (_expiryDate != null &&
+        _expiryDate!.isAfter(DateTime.now()) &&
+        _token != null) {
+      return _token!;
+    }
+    return '';
+  }
+
+  bool get isAuth {
+    return token != '';
+  }
+
+  String get userID {
+    return _userId!;
+  }
 
   Future<void> _authenticate(
       String email, String password, String urlSegment) async {
@@ -25,9 +44,17 @@ class Auth with ChangeNotifier {
         ),
       );
       var responseData = json.decode(response.body);
+
       if (responseData['error'] != null) {
         throw HttpException(responseData['error']['message']);
       }
+
+      _token = responseData['idToken'];
+      _userId = responseData['localId'];
+      _expiryDate = DateTime.now().add(Duration(
+        seconds: int.parse(responseData['expiresIn']),
+      ));
+      notifyListeners();
     } catch (error) {
       rethrow;
     }

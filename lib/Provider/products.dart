@@ -7,40 +7,43 @@ import './product.dart';
 
 class Products with ChangeNotifier {
   List<Product> _items = [
-    Product(
-      id: 'p1',
-      title: 'One Piece',
-      description: 'Best anime of all the time',
-      price: 29.99,
-      imageUrl:
-          'https://images-na.ssl-images-amazon.com/images/I/81rEhhwbubL.jpg',
-    ),
-    Product(
-      id: 'p2',
-      title: 'Darling in the franxx',
-      description: 'Anime world with zero two.',
-      price: 59.99,
-      imageUrl:
-          'https://images-na.ssl-images-amazon.com/images/I/81fkwgB06lL.jpg',
-    ),
-    Product(
-      id: 'p3',
-      title: 'Demon Slayer',
-      description: 'Brother and sister anime',
-      price: 19.99,
-      imageUrl:
-          'https://i.pinimg.com/originals/51/04/03/510403652ec117ff6d1c12ff85731319.jpg',
-    ),
-    Product(
-      id: 'p4',
-      title: 'Spy x Family',
-      description: 'New Trending anime.',
-      price: 49.99,
-      imageUrl:
-          'https://images-na.ssl-images-amazon.com/images/I/717CIWUQyBL.jpg',
-    ),
+    // Product(
+    //   id: 'p1',
+    //   title: 'One Piece',
+    //   description: 'Best anime of all the time',
+    //   price: 29.99,
+    //   imageUrl:
+    //       'https://images-na.ssl-images-amazon.com/images/I/81rEhhwbubL.jpg',
+    // ),
+    // Product(
+    //   id: 'p2',
+    //   title: 'Darling in the franxx',
+    //   description: 'Anime world with zero two.',
+    //   price: 59.99,
+    //   imageUrl:
+    //       'https://images-na.ssl-images-amazon.com/images/I/81fkwgB06lL.jpg',
+    // ),
+    // Product(
+    //   id: 'p3',
+    //   title: 'Demon Slayer',
+    //   description: 'Brother and sister anime',
+    //   price: 19.99,
+    //   imageUrl:
+    //       'https://i.pinimg.com/originals/51/04/03/510403652ec117ff6d1c12ff85731319.jpg',
+    // ),
+    // Product(
+    //   id: 'p4',
+    //   title: 'Spy x Family',
+    //   description: 'New Trending anime.',
+    //   price: 49.99,
+    //   imageUrl:
+    //       'https://images-na.ssl-images-amazon.com/images/I/717CIWUQyBL.jpg',
+    // ),
   ];
   // var _showFavoritesOnly = false;
+  final String authToken;
+
+  Products(this.authToken, this._items);
 
   List<Product> get items {
     // if (_showFavoritesOnly) {
@@ -69,8 +72,8 @@ class Products with ChangeNotifier {
   // }
 
   Future<void> fetchAndSetProduct() async {
-    const url =
-        'https://backend-practice-23eef-default-rtdb.firebaseio.com/products.json';
+    final url =
+        'https://backend-practice-23eef-default-rtdb.firebaseio.com/products.json?auth=$authToken';
     try {
       // print("value['title'] = $value['title']");
       final response = await http.get(Uri.parse(url));
@@ -100,8 +103,8 @@ class Products with ChangeNotifier {
   }
 
   Future<void> addProduct(product) async {
-    const url =
-        'https://backend-practice-23eef-default-rtdb.firebaseio.com/products.json';
+    final url =
+        'https://backend-practice-23eef-default-rtdb.firebaseio.com/products.json?auth=$authToken';
     try {
       final response = await http.post(Uri.parse(url),
           body: json.encode({
@@ -125,7 +128,7 @@ class Products with ChangeNotifier {
 
   Future<void> updateProduct(String id, product) async {
     final url =
-        'https://backend-practice-23eef-default-rtdb.firebaseio.com/products/$id.json';
+        'https://backend-practice-23eef-default-rtdb.firebaseio.com/products/$id.json?auth=$authToken';
     var gotThisIndex =
         _items.indexWhere((existingProduct) => existingProduct.id == id);
     if (gotThisIndex >= 0) {
@@ -150,7 +153,7 @@ class Products with ChangeNotifier {
 
   Future<void> deleteProduct(String id) async {
     final url =
-        'https://backend-practice-23eef-default-rtdb.firebaseio.com/products/$id.json';
+        'https://backend-practice-23eef-default-rtdb.firebaseio.com/products/$id.json?auth=$authToken';
     final existingIndex =
         _items.indexWhere((existingProduct) => existingProduct.id == id);
     var product = _items[existingIndex];

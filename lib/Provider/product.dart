@@ -20,7 +20,7 @@ class Product with ChangeNotifier {
     this.isFavorite = false,
   });
 
-  Future<void> toggleFavoriteStatus() async {
+  Future<void> toggleFavoriteStatus(String token) async {
     bool oldStatus = isFavorite;
 
     //this is for mobile ui....
@@ -29,7 +29,7 @@ class Product with ChangeNotifier {
 
     //and this block is for web server... (Note:- error is thrown for only post and get.)
     final url =
-        'https://backend-practice-23eef-default-rtdb.firebaseio.com/products/$id.json';
+        'https://backend-practice-23eef-default-rtdb.firebaseio.com/products/$id.json?auth=$token';
     try {
       var response = await http.patch(Uri.parse(url),
           body: json.encode({

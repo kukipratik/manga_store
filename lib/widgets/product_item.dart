@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:manga_store/Provider/auth.dart';
 import 'package:manga_store/Provider/cart.dart';
 import 'package:manga_store/Provider/product.dart';
 import 'package:provider/provider.dart';
@@ -12,6 +13,7 @@ class ProductItem extends StatelessWidget {
   Widget build(BuildContext context) {
     final product = Provider.of<Product>(context, listen: false);
     final cart = Provider.of<Cart>(context, listen: false);
+    final authData = Provider.of<Auth>(context, listen: false);
     // print("\n product= ${product.title}");
     // print("Build Again boro");
     return ClipRRect(
@@ -26,7 +28,8 @@ class ProductItem extends StatelessWidget {
                       ? Icons.favorite
                       : Icons.favorite_border_outlined),
                   color: Colors.pink,
-                  onPressed: () => product.toggleFavoriteStatus());
+                  onPressed: () =>
+                      product.toggleFavoriteStatus(authData.token));
             },
           ),
           title: Text(
