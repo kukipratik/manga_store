@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:manga_store/Provider/auth.dart';
 import 'package:manga_store/Provider/cart.dart';
 import 'package:manga_store/Provider/order.dart';
 import 'package:manga_store/Provider/products.dart';
@@ -24,45 +25,49 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MultiProvider(
-      providers: [
-        ChangeNotifierProvider(
-          create: (context) => Products(),
-        ),
-        ChangeNotifierProvider(
-          create: (context) => Cart(),
-        ),
-        ChangeNotifierProvider(
-          create: (context) => Orders(),
-        ),
-      ],
-      child: MaterialApp(
-        debugShowCheckedModeBanner: false,
-        theme: ThemeData(
-            scaffoldBackgroundColor: bgColor,
-            textTheme: ThemeData.light().textTheme.copyWith(
-                  titleLarge: GoogleFonts.domine(
-                      textStyle: const TextStyle(
-                    color: Colors.white,
-                    fontWeight: FontWeight.bold,
-                    fontSize: 25,
-                  )),
-                  titleMedium: GoogleFonts.domine(
-                      textStyle: const TextStyle(
-                    color: Colors.black,
-                    fontSize: 20,
-                  )),
-                )),
-        initialRoute: authScreen,
-        routes: {
-          homeScreen: (context) => const HomeScreen(),
-          productDetail: (context) => const ProductDetail(),
-          cartScreen: (context) => const CartScreen(),
-          orderScreen: (context) => const OrderScreen(),
-          userProductScreen: (context) => const UserProductsScreen(),
-          editProductScreen: (context) => const EditProductScreen(),
-          authScreen: (context) => const AuthScreen(),
-        },
-      ),
-    );
+        providers: [
+          ChangeNotifierProvider(
+            create: (context) => Auth(),
+          ),
+          ChangeNotifierProvider(
+            create: (context) => Products(),
+          ),
+          ChangeNotifierProvider(
+            create: (context) => Cart(),
+          ),
+          ChangeNotifierProvider(
+            create: (context) => Orders(),
+          ),
+        ],
+        child: Consumer<Auth>(
+          builder: (context, auth, child) => MaterialApp(
+            debugShowCheckedModeBanner: false,
+            theme: ThemeData(
+                scaffoldBackgroundColor: bgColor,
+                textTheme: ThemeData.light().textTheme.copyWith(
+                      titleLarge: GoogleFonts.domine(
+                          textStyle: const TextStyle(
+                        color: Colors.white,
+                        fontWeight: FontWeight.bold,
+                        fontSize: 25,
+                      )),
+                      titleMedium: GoogleFonts.domine(
+                          textStyle: const TextStyle(
+                        color: Colors.black,
+                        fontSize: 20,
+                      )),
+                    )),
+            initialRoute: authScreen,
+            routes: {
+              homeScreen: (context) => const HomeScreen(),
+              productDetail: (context) => const ProductDetail(),
+              cartScreen: (context) => const CartScreen(),
+              orderScreen: (context) => const OrderScreen(),
+              userProductScreen: (context) => const UserProductsScreen(),
+              editProductScreen: (context) => const EditProductScreen(),
+              authScreen: (context) => const AuthScreen(),
+            },
+          ),
+        ));
   }
 }
