@@ -102,8 +102,8 @@ class Products with ChangeNotifier {
       final favoriateData = json.decode(favoriateResponse.body);
 
       extractedData.forEach((productId, value) {
-        print("userId= $userId");
-        print("title = ${value['title']} and creator = ${value['creatorId']}");
+        // print("userId= $userId");
+        // print("title = ${value['title']} and creator = ${value['creatorId']}");
         loadedProduct.add(Product(
           id: productId,
           title: value['title'],

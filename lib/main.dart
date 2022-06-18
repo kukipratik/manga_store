@@ -8,6 +8,7 @@ import 'package:manga_store/Screens/auth_screen.dart';
 import 'package:manga_store/Screens/cart_screen.dart';
 import 'package:manga_store/Screens/edit_product_screen.dart';
 import 'package:manga_store/Screens/order_screen.dart';
+import 'package:manga_store/Screens/splash_screen.dart';
 import 'package:manga_store/Screens/user_product_screen.dart';
 import 'package:provider/provider.dart';
 import 'Screens/home.dart';
@@ -67,7 +68,15 @@ class MyApp extends StatelessWidget {
                       )),
                     )),
             // initialRoute: authScreen,
-            home: auth.isAuth ? const HomeScreen() : const AuthScreen(),
+            home: auth.isAuth
+                ? const HomeScreen()
+                : FutureBuilder(
+                    future: auth.tryAutoLogin(),
+                    builder: (context, snapshot) =>
+                        snapshot.connectionState == ConnectionState.waiting
+                            ? const SplashScreen()
+                            : const AuthScreen(),
+                  ),
             routes: {
               homeScreen: (context) => const HomeScreen(),
               productDetail: (context) => const ProductDetail(),

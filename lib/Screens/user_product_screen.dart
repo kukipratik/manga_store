@@ -20,7 +20,7 @@ class UserProductsScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     // final productsData = Provider.of<Products>(context);
-    print("build again...");
+    // print("build again...");
     return Scaffold(
         appBar: AppBar(
           elevation: 0,

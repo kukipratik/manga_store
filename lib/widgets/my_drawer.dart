@@ -1,6 +1,8 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:manga_store/Provider/auth.dart';
 import 'package:manga_store/utils/routes.dart';
+import 'package:provider/provider.dart';
 
 class MyDrawer extends StatelessWidget {
   const MyDrawer({
@@ -44,17 +46,6 @@ class MyDrawer extends StatelessWidget {
               ),
               const Divider(),
               ListTile(
-                leading: const Icon(CupertinoIcons.cart),
-                title: Text(
-                  "Cart Page",
-                  style: Theme.of(context).textTheme.titleMedium,
-                ),
-                onTap: () {
-                  Navigator.of(context).pushNamed(cartScreen);
-                },
-              ),
-              const Divider(),
-              ListTile(
                 leading: const Icon(CupertinoIcons.money_dollar_circle),
                 title: Text(
                   "Your Orders",
@@ -73,6 +64,18 @@ class MyDrawer extends StatelessWidget {
                 ),
                 onTap: () {
                   Navigator.of(context).pushReplacementNamed(userProductScreen);
+                },
+              ),
+              const Divider(),
+              ListTile(
+                leading: const Icon(Icons.exit_to_app),
+                title: Text(
+                  'Log Out',
+                  style: Theme.of(context).textTheme.titleMedium,
+                ),
+                onTap: () {
+                  Navigator.of(context).pop();
+                  Provider.of<Auth>(context, listen: false).logOut();
                 },
               ),
               const Divider(),
