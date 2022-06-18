@@ -1,6 +1,8 @@
 import 'dart:convert';
+
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
+
 import 'package:manga_store/models/http_exception.dart';
 
 import './product.dart';
@@ -42,8 +44,13 @@ class Products with ChangeNotifier {
   ];
   // var _showFavoritesOnly = false;
   final String authToken;
+  final String userId;
 
-  Products(this.authToken, this._items);
+  Products(
+    this._items,
+    this.authToken,
+    this.userId,
+  );
 
   List<Product> get items {
     // if (_showFavoritesOnly) {
@@ -71,9 +78,11 @@ class Products with ChangeNotifier {
   //   notifyListeners();
   // }
 
-  Future<void> fetchAndSetProduct() async {
-    final url =
-        'https://backend-practice-23eef-default-rtdb.firebaseio.com/products.json?auth=$authToken';
+  Future<void> fetchAndSetProduct([bool filterByUser = false]) async {
+    final filterString =
+        filterByUser ? 'orderBy="creatorId"&equalTo="$userId"' : '';
+    var url =
+        'https://backend-practice-23eef-default-rtdb.firebaseio.com/products.json?auth=$authToken&$filterString';
     try {
       // print("value['title'] = $value['title']");
       final response = await http.get(Uri.parse(url));
@@ -86,14 +95,26 @@ class Products with ChangeNotifier {
         //this will happen in empty case...
         return;
       }
-      extractedData.forEach((key, value) {
+
+      url =
+          'https://backend-practice-23eef-default-rtdb.firebaseio.com/userFavoriate/$userId.json?auth=$authToken';
+      final favoriateResponse = await http.get(Uri.parse(url));
+      final favoriateData = json.decode(favoriateResponse.body);
+
+      extractedData.forEach((productId, value) {
+        print("userId= $userId");
+        print("title = ${value['title']} and creator = ${value['creatorId']}");
         loadedProduct.add(Product(
-            id: key,
-            title: value['title'],
-            description: value['description'],
-            price: value['price'],
-            imageUrl: value['imageUrl'],
-            isFavorite: value['isFavorite']));
+          id: productId,
+          title: value['title'],
+          description: value['description'],
+          price: value['price'],
+          imageUrl: value['imageUrl'],
+          // isFavorite: value['isFavorite'],
+          isFavorite: (favoriateData == null)
+              ? false
+              : favoriateData[productId] ?? false,
+        ));
       });
       _items = loadedProduct;
       notifyListeners();
@@ -104,7 +125,7 @@ class Products with ChangeNotifier {
 
   Future<void> addProduct(product) async {
     final url =
-        'https://backend-practice-23eef-default-rtdb.firebaseio.com/products.json?auth=$authToken';
+        'https://backend-practice-23eef-default-rtdb.firebaseio.com/products.json?auth=$authToken"';
     try {
       final response = await http.post(Uri.parse(url),
           body: json.encode({
@@ -112,7 +133,7 @@ class Products with ChangeNotifier {
             "description": product.description,
             "price": product.price,
             "imageUrl": product.imageUrl,
-            "isFavorite": product.isFavorite
+            "creatorId": userId,
           }));
       _items.add(Product(
           id: json.decode(response.body)['name'],
