@@ -56,7 +56,7 @@ class OrderScreen extends StatelessWidget {
             if (dataSnap.error != null) {
               // have some error
               // then do some error handelling man
-              return const Center(child: Text("An error Occured man"));
+              return const Center(child: Text("No Orders yet."));
             } else {
               return Consumer<Orders>(
                 builder: (context, value, child) => ListView.builder(
