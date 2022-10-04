@@ -11,6 +11,7 @@ class Product with ChangeNotifier {
   final String? imageUrl;
   bool isFavorite;
 
+  //constructor...
   Product({
     @required this.id,
     @required this.title,
@@ -20,6 +21,7 @@ class Product with ChangeNotifier {
     this.isFavorite = false,
   });
 
+  //
   Future<void> toggleFavoriteStatus(String token, String userId) async {
     bool oldStatus = isFavorite;
 

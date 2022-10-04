@@ -8,6 +8,7 @@ import 'package:manga_store/models/http_exception.dart';
 import './product.dart';
 
 class Products with ChangeNotifier {
+  //variable.....
   List<Product> _items = [
     // Product(
     //   id: 'p1',
@@ -42,42 +43,32 @@ class Products with ChangeNotifier {
     //       'https://images-na.ssl-images-amazon.com/images/I/717CIWUQyBL.jpg',
     // ),
   ];
-  // var _showFavoritesOnly = false;
   final String authToken;
   final String userId;
 
+  //constructor......
   Products(
     this._items,
     this.authToken,
     this.userId,
   );
 
+  // function for getting item....
   List<Product> get items {
-    // if (_showFavoritesOnly) {
-    //   return _items.where((prodItem) => prodItem.isFavorite).toList();
-    // }
     return [..._items];
   }
 
+  //function for getting favoriate items only...
   List<Product> get favoriteItems {
-    // notifyListeners();
     return _items.where((prodItem) => prodItem.isFavorite).toList();
   }
 
+  //function for finding product using id...
   Product findById(String id) {
     return _items.firstWhere((prod) => prod.id == id);
   }
 
-  // void showFavoritesOnly() {
-  //   _showFavoritesOnly = true;
-  //   notifyListeners();
-  // }
-
-  // void showAll() {
-  //   _showFavoritesOnly = false;
-  //   notifyListeners();
-  // }
-
+  // function for getting product from server...
   Future<void> fetchAndSetProduct([bool filterByUser = false]) async {
     final filterString =
         filterByUser ? 'orderBy="creatorId"&equalTo="$userId"' : '';
